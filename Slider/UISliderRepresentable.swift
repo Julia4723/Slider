@@ -20,7 +20,7 @@ struct UISliderRepresentable: UIViewRepresentable {
         let slider = UISlider()
         slider.minimumValue = 1
         slider.maximumValue = 100
-       // slider.value = currentValue
+        slider.value = 1
         slider.addTarget(
             context.coordinator,
             action: #selector(Coordinator.sliderValueChanged),

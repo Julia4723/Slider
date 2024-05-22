@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct MainView: View {
-    @State var currentValue: Float = 100
-    @State var targetValue: Float = Float(Int.random(in: 1...100))
+    @State var currentValue: Float
+    @Binding var targetValue: Float
    
     @State private var showAlert = false
+    
+    @State var targetV = Float(Int.random(in: 1...100))
     
     var body: some View {
        let difference = abs(currentValue - targetValue)
@@ -19,7 +21,7 @@ struct MainView: View {
         
         VStack {
             
-            Text("Переместите слайдер на \(lround(Double(targetValue)))")
+            Text("Переместите слайдер на \(lround(Double(targetV)))")
                 
             
             HStack {
@@ -59,9 +61,9 @@ struct MainView: View {
         return Int(100 - difference)
     }
 
-    private func resetGame() {
-            targetValue = Float(Int.random(in: 1...100))
-            currentValue = 0
+    func resetGame() {
+        targetV = Float(Int.random(in: 1...100))
+        currentValue = 0
         }
     
     
@@ -75,5 +77,5 @@ struct MainView: View {
 
 
 #Preview {
-    MainView()
+    MainView(currentValue: 20, targetValue: .constant(90))
 }
