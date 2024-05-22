@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct UISliderRepresentable: UIViewRepresentable {
     
@@ -13,11 +14,13 @@ struct UISliderRepresentable: UIViewRepresentable {
     @Binding var targetValue: Float
     
     
+    
     //Создает элемент
     func makeUIView(context: Context) -> UISlider {
         let slider = UISlider()
         slider.minimumValue = 1
         slider.maximumValue = 100
+       // slider.value = currentValue
         slider.addTarget(
             context.coordinator,
             action: #selector(Coordinator.sliderValueChanged),
@@ -30,7 +33,7 @@ struct UISliderRepresentable: UIViewRepresentable {
     
     //обновляет элемент
     func updateUIView(_ uiView: UISlider, context: Context) {
-        uiView.value = currentValue
+        uiView.value = Float(currentValue)
     }
     
     
@@ -44,6 +47,7 @@ extension UISliderRepresentable {
         class Coordinator: NSObject {
             @Binding var currentValue: Float
             @Binding var targetValue: Float
+           
             
             init(value: Binding<Float>, targetValue: Binding<Float>) {
                 self._currentValue = value
@@ -52,7 +56,7 @@ extension UISliderRepresentable {
             }
             
             @objc func sliderValueChanged(_ sender: UISlider) {
-                currentValue = sender.value
+                currentValue = Float(sender.value)
                 
             }
         }
@@ -60,5 +64,5 @@ extension UISliderRepresentable {
    
 
 #Preview {
-    UISliderRepresentable(currentValue: .constant(40), targetValue: .constant(40))
+    UISliderRepresentable(currentValue: .constant(90), targetValue: .constant(90))
 }

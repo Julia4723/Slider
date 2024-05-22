@@ -8,28 +8,26 @@
 import SwiftUI
 
 struct MainView: View {
-    @State var currentValue: Float
-    @Binding var targetValue: Float
+    @State var currentValue: Float = 100
+    @State var targetValue: Float = Float(Int.random(in: 1...100))
    
     @State private var showAlert = false
     
-    
-    private let targetV = Int.random(in: 1...100)
-    
-    
     var body: some View {
-        let difference = abs(currentValue - Float(targetV))
-        let opacity = Double(1 - min(difference / 100, 1))
+       let difference = abs(currentValue - targetValue)
+       let opacity = 1 - min(difference / 100, 1)
+        
         VStack {
             
-            Text("Подвиньте слайдер на \(targetV)")
+            Text("Переместите слайдер на \(lround(Double(targetValue)))")
                 
             
             HStack {
                 Text("0")
                 
                 UISliderRepresentable(currentValue: $currentValue, targetValue: $targetValue)
-                    .opacity(opacity)
+                
+                    .opacity(Double(opacity))
                     .onChange(of: currentValue) { _, newValue in
                        currentValue = newValue
                     }
@@ -42,14 +40,16 @@ struct MainView: View {
             }
             .padding()
             
-            HStack {
+            VStack {
                 Button("Проверь меня", action: checkValue)
                     .alert("Value", isPresented: $showAlert, actions: {}) {
                         Text("Your score \(computeScore())")
                     }
+                    .padding()
+                Button("Начать заново", action: resetGame)
             }
             
-            Text("Текущее значение: \(lround(Double(computeScore())))")
+           // Text("Текущее значение: \(computeScore())")
             
         }
     }
@@ -58,6 +58,11 @@ struct MainView: View {
         let difference = abs(targetValue - currentValue)
         return Int(100 - difference)
     }
+
+    private func resetGame() {
+            targetValue = Float(Int.random(in: 1...100))
+            currentValue = 0
+        }
     
     
     private func checkValue() {
@@ -70,5 +75,5 @@ struct MainView: View {
 
 
 #Preview {
-    MainView(currentValue: 70, targetValue: .constant(90))
+    MainView()
 }
